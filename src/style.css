@@ -12,6 +12,8 @@
   --colour-tertiary-a: #FFB22C70;
   --colour-quaternary: #F7F7F7;
   --colour-quaternary-a: #F7F7F770;
+  --colour-validation-correct: #008000;
+  --colour-validation-error: #ff0000;
 
   color-scheme: light dark;
   color: var(--colour-quaternary);
