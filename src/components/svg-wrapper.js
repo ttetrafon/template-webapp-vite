@@ -14,11 +14,11 @@ template.innerHTML = /*html*/`
   #svg-container {
     height: 100%;
     aspect-ratio: 1;
-    border-radius: 50%;
+    border-radius: 25%;
     justify-content: center;
   }
   svg {
-    width: 100%;
+    height: 100%;
     aspect-ratio: 1;
   }
 
@@ -62,7 +62,6 @@ class Component extends HTMLElement {
   set background(value) { this.setAttribute('background', value); }
   set colour(value) { this.setAttribute('colour', value); }
   set image(value) { this.setAttribute('image', value); }
-  set label(value) { this.setAlt('label', value); }
   set pointer(value) { this.setAttribute('pointer', value); }
 
   // A web component implements the following lifecycle methods.
@@ -100,7 +99,7 @@ class Component extends HTMLElement {
     // Note that adoption does not trigger the constructor again.
   }
 
-  async createSvg() {
+  async createSvg(url) {
     let svg = await import(`../assets/ui/${ this.image }.svg?raw`);
     this.$svgContainer.innerHTML = svg.default;
     this.$svg = this._shadow.querySelector("svg");
@@ -108,10 +107,10 @@ class Component extends HTMLElement {
     this.$svg.removeAttribute("width");
     this.$svg.removeAttribute("fill");
     this.$path = this._shadow.querySelector("path");
-    this.setAlt();
-    this.setPointer();
-    this.setColour();
-    this.setBackground();
+    // this.setAlt();
+    // this.setColour();
+    // this.setBackground();
+    // this.setPointer();
   }
 
   setAlt() {

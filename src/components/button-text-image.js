@@ -1,6 +1,5 @@
 import styles from '../style.css?inline';
-import { emitCustomEvent } from '../helper/dom';
-import { eventNames } from '../data/enums';
+import { emitCustomEvent } from '../helper/dom.js';
 
 const template = document.createElement('template');
 
@@ -98,7 +97,7 @@ class Component extends HTMLElement {
   clickEvent(event) {
     event.stopPropagation();
     if (!this.eventName) return;
-    emitCustomEvent(this.$button, eventNames[this.eventName].description, {});
+    emitCustomEvent(this.$button, this.eventName, {});
   }
 }
 
