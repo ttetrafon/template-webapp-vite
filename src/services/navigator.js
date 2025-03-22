@@ -1,11 +1,13 @@
 import { domainRoot } from '../data/config.js';
-import { checkStringForExistence, checkStringForNonExistence } from '../helper/data.js';
 import { eventNames } from '../data/enums.js';
 import { routes, aliases } from '../data/routes.js';
+import { checkStringForExistence, checkStringForNonExistence } from '../helper/data.js';
+import { clearChildren } from '../helper/dom.js';
 
 export class Navigator {
-  constructor(containerId) {
+  constructor(containerId, dialogElement) {
     this.container = document.querySelector(containerId);
+    this.dialog = document.querySelector(dialogElement);
 
     this.$subPageContainers = {};
 
@@ -28,8 +30,49 @@ export class Navigator {
     });
 
     window.addEventListener(eventNames.SUB_PAGE_CONTAINER.description, (e) => {
+      e.stopPropagation();
       // console.log(eventNames.SUB_PAGE_CONTAINER.description, e.detail);
       this.$subPageContainers[e.detail.route] = e.detail.container;
+    });
+
+    window.addEventListener(eventNames.DIALOG_OPEN.description, (e) => {
+      e.stopPropagation();
+      clearChildren(this.dialog);
+
+      this.$dialogConfirmCallback = e.detail.confirmCb ? e.detail.confirmCb : () => {};
+      this.$dialogCancelCallback = e.detail.cancelCb ? e.detail.cancelCb : () => {};
+
+      let el = document.createElement(e.detail.element);
+      this.dialog.appendChild(el);
+
+      this.dialog.showModal();
+    });
+    this.dialog.addEventListener(eventNames.DIALOG_CONFIRM.description, async (event) => {
+      console.log("dialog event:", eventNames.DIALOG_CONFIRM.description)
+      event.stopPropagation();
+      this.dialog.close();
+      await this.$dialogConfirmCallback(event.detail.data);
+
+      this.$dialogCancelCallback = () => {};
+      this.$dialogConfirmCallback = () => {};
+    });
+    this.dialog.addEventListener(eventNames.DIALOG_CANCEL.description, async (event) => {
+      console.log("dialog event:", eventNames.DIALOG_CANCEL.description)
+      event.stopPropagation();
+      this.dialog.close();
+      await this.$dialogCancelCallback();
+
+      this.$dialogCancelCallback = () => {};
+      this.$dialogConfirmCallback = () => {};
+    });
+    this.dialog.addEventListener('cancel', async (event) => {
+      console.log("dialog event: cancel");
+      event.stopPropagation();
+      this.dialog.close();
+      await this.$dialogCancelCallback();
+
+      this.$dialogCancelCallback = () => {};
+      this.$dialogConfirmCallback = () => {};
     });
   }
 

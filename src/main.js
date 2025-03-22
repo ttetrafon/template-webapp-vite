@@ -1,5 +1,6 @@
 import './components/button-text-image.js';
 import './components/input-field.js';
+import './components/modal-dialog.js';
 import './components/page-1.js';
 import './components/page-2.js';
 import './components/radio-group.js';
@@ -15,4 +16,4 @@ import './style.css'
 import { Navigator } from './services/navigator.js';
 import state from './services/state.js';
 
-const navigator = new Navigator('#app');
+const navigator = new Navigator('#app', 'dialog');
