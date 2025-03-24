@@ -5,9 +5,8 @@ import { checkStringForExistence, checkStringForNonExistence } from '../helper/d
 import { clearChildren } from '../helper/dom.js';
 
 export class Navigator {
-  constructor(containerId, dialogElement) {
+  constructor(containerId) {
     this.container = document.querySelector(containerId);
-    this.dialog = document.querySelector(dialogElement);
 
     this.$subPageContainers = {};
 
@@ -35,14 +34,21 @@ export class Navigator {
       this.$subPageContainers[e.detail.route] = e.detail.container;
     });
 
+    this.dialog = document.createElement('dialog');
+    const body = document.querySelector("body");
+    body.appendChild(this.dialog);
+
     window.addEventListener(eventNames.DIALOG_OPEN.description, (e) => {
       e.stopPropagation();
       clearChildren(this.dialog);
 
-      this.$dialogConfirmCallback = e.detail.confirmCb ? e.detail.confirmCb : () => {};
-      this.$dialogCancelCallback = e.detail.cancelCb ? e.detail.cancelCb : () => {};
+      this.$dialogConfirmCallback = e.detail.confirmCb ? e.detail.confirmCb : () => { };
+      this.$dialogCancelCallback = e.detail.cancelCb ? e.detail.cancelCb : () => { };
 
       let el = document.createElement(e.detail.element);
+      for (const [key, value] of Object.entries(e.detail.data)) {
+        el.setAttribute(key, JSON.stringify(value));
+      }
       this.dialog.appendChild(el);
 
       this.dialog.showModal();
@@ -53,8 +59,8 @@ export class Navigator {
       this.dialog.close();
       await this.$dialogConfirmCallback(event.detail.data);
 
-      this.$dialogCancelCallback = () => {};
-      this.$dialogConfirmCallback = () => {};
+      this.$dialogCancelCallback = () => { };
+      this.$dialogConfirmCallback = () => { };
     });
     this.dialog.addEventListener(eventNames.DIALOG_CANCEL.description, async (event) => {
       console.log("dialog event:", eventNames.DIALOG_CANCEL.description)
@@ -62,8 +68,8 @@ export class Navigator {
       this.dialog.close();
       await this.$dialogCancelCallback();
 
-      this.$dialogCancelCallback = () => {};
-      this.$dialogConfirmCallback = () => {};
+      this.$dialogCancelCallback = () => { };
+      this.$dialogConfirmCallback = () => { };
     });
     this.dialog.addEventListener('cancel', async (event) => {
       console.log("dialog event: cancel");
@@ -71,8 +77,8 @@ export class Navigator {
       this.dialog.close();
       await this.$dialogCancelCallback();
 
-      this.$dialogCancelCallback = () => {};
-      this.$dialogConfirmCallback = () => {};
+      this.$dialogCancelCallback = () => { };
+      this.$dialogConfirmCallback = () => { };
     });
   }
 
