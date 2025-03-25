@@ -90,7 +90,7 @@ class Component extends HTMLElement {
    * @param {Event} event
    */
   async openModal(event) {
-    event.stopPropagation();
+    event.stopImmediatePropagation();
     console.log("clicked to open modal!");
     emitDialogEvent(this.$modalBtn, 'modal-dialog', this.modalConfirmCallback, this.modalCancelCallback);
   }

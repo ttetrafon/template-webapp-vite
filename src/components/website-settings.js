@@ -104,7 +104,7 @@ class Component extends HTMLElement {
    * @param {Event} event
    */
   settingButtonClicked(panel, event) {
-    event.stopPropagation();
+    event.stopImmediatePropagation();
     if (!this.$panels[panel].classList.contains("hidden")) {
       this.$panels[panel].classList.toggle("hidden", true);
     }

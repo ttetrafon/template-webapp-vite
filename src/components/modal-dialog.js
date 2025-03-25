@@ -68,13 +68,13 @@ class Component extends HTMLElement {
   }
 
   cancelDialog(event) {
-    event.stopPropagation();
+    event.stopImmediatePropagation();
     console.log("... clicked cancel button!")
     emitDialogCancelEvent(this.$cancelBtn);
   }
 
   confirmDialog(event) {
-    event.stopPropagation();
+    event.stopImmediatePropagation();
     console.log("... clicked ok button!")
     emitDialogConfirmEvent(this.$okBtn, {
       prop: 'this is something',

@@ -100,7 +100,7 @@ class Component extends HTMLElement {
    * @param {Event} event
    */
   switchToTab(path, event) {
-    event.stopPropagation();
+    event.stopImmediatePropagation();
     emitNavigationEvent(event.target, path);
   }
 }
