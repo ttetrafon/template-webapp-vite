@@ -1,7 +1,7 @@
 import { eventNames } from "../data/enums.js";
 
 export async function clearChildren(parent) {
-  while(parent.firstChild) {
+  while (parent.firstChild) {
     parent.removeChild(parent.lastChild);
   }
 }
@@ -34,7 +34,7 @@ export async function findSelfIndexInParent(self, parent) {
 /**
  * Creates options within a select element.
  * @param {HTMLElement} selector
- * @param {Array[Object]} options
+ * @param {Array<Object>} options
  * @param {string} valueKey
  * @param {string} textKey
  */
@@ -59,9 +59,15 @@ export async function setDateInputAsToday(dateInput) {
   const month = String(today.getMonth() + 1).padStart(2, '0');
   const day = String(today.getDate()).padStart(2, '0');
 
-  dateInput.value = `${year}-${month}-${day}`;
+  dateInput.value = `${ year }-${ month }-${ day }`;
 }
 
+/**
+ *
+ * @param {HTMLElement} that
+ * @param {String} eventName
+ * @param {Object} eventDetails
+ */
 export async function emitCustomEvent(that, eventName, eventDetails) {
   that.dispatchEvent(new CustomEvent(eventName, {
     bubbles: true,
@@ -83,11 +89,12 @@ export async function emitNavigationEvent(that, target) {
     target: target
   });
 }
-export async function emitDialogEvent(that, webComponent, confirmCb, cancelCb) {
+export async function emitDialogEvent(that, webComponent, data, confirmCb, cancelCb) {
   emitCustomEvent(that, eventNames.DIALOG_OPEN.description, {
     bubbles: true,
     composed: true,
     element: webComponent,
+    data: data,
     confirmCb: confirmCb,
     cancelCb: cancelCb
   });
@@ -114,7 +121,7 @@ export async function emitSubPageContainerEvent(that, route) {
     emitCustomEvent(that, eventNames.SUB_PAGE_CONTAINER.description, {
       bubbles: true,
       composed: true,
-        container: that,
+      container: that,
       route: route
     });
   }, 0);
