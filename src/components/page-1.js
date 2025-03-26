@@ -14,6 +14,11 @@ template.innerHTML = /*html*/`
     align-items: center;
   }
 
+  hr {
+    width: 100%;
+    margin: 15px 0;
+  }
+
   svg-wrapper {
     margin-top: 20px;
     width: 5em;
@@ -22,10 +27,23 @@ template.innerHTML = /*html*/`
 
 <h1>Page 1</h1>
 <a href="/page-two" class="nav-link">Go to Page Two</a>
+
+<hr>
+
 <svg-wrapper
   image="home"
 ></svg-wrapper>
+
+<hr>
+
 <button id="open-modal">Open Modal!</button>
+
+<hr>
+
+<png-wrapper
+  label="Aeroplane"
+  image="Airplane_1"
+></png-wrapper>
 `;
 
 class Component extends HTMLElement {

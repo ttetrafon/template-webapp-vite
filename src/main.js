@@ -3,6 +3,7 @@ import './components/input-field.js';
 import './components/modal-dialog.js';
 import './components/page-1.js';
 import './components/page-2.js';
+import './components/png-wrapper.js';
 import './components/radio-group.js';
 import './components/radio-option.js';
 import './components/selector-field.js';

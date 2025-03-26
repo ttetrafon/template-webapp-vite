@@ -69,7 +69,7 @@ class Component extends HTMLElement {
     if (oldVal == newVal) return;
     switch (name) {
       case "image":
-        this.createSvg(`./img/ui/${ this.image }`);
+        this.createSvg();
         break;
       case "label":
         this.$svgContainer.setAttribute("title", this.label);
@@ -99,18 +99,23 @@ class Component extends HTMLElement {
     // Note that adoption does not trigger the constructor again.
   }
 
-  async createSvg(url) {
-    let svg = await import(`../assets/${ this.image.includes("/") ? this.image : "ui/" + this.image  }.svg?raw`);
-    this.$svgContainer.innerHTML = svg.default;
-    this.$svg = this._shadow.querySelector("svg");
-    this.$svg.removeAttribute("height");
-    this.$svg.removeAttribute("width");
-    this.$svg.removeAttribute("fill");
-    this.$path = this._shadow.querySelector("path");
-    // this.setAlt();
-    // this.setColour();
-    // this.setBackground();
-    // this.setPointer();
+  async createSvg() {
+    try {
+      let svg = await import(`../assets/ui/${ this.image }.svg?raw`);
+      this.$svgContainer.innerHTML = svg.default;
+      this.$svg = this._shadow.querySelector("svg");
+      this.$svg.removeAttribute("height");
+      this.$svg.removeAttribute("width");
+      this.$svg.removeAttribute("fill");
+      this.$path = this._shadow.querySelector("path");
+      // this.setAlt();
+      // this.setColour();
+      // this.setBackground();
+      // this.setPointer();
+    }
+    catch(err) {
+      console.error(err);
+    }
   }
 
   setAlt() {
