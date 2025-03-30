@@ -108,13 +108,13 @@ class Component extends HTMLElement {
       this.$svg.removeAttribute("width");
       this.$svg.removeAttribute("fill");
       this.$path = this._shadow.querySelector("path");
-      // this.setAlt();
-      // this.setColour();
-      // this.setBackground();
-      // this.setPointer();
+      this.setAlt();
+      this.setColour();
+      this.setBackground();
+      this.setPointer();
     }
-    catch(err) {
-      console.error(err);
+    catch (err) {
+
     }
   }
 
