@@ -11,4 +11,5 @@ export const eventNames = Object.freeze({
 });
 
 export const generalNames = Object.freeze({
+  OBSERVABLE_USER: Symbol("user-observable")
 });
