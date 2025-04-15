@@ -4,14 +4,20 @@ export const routes = {
     title: "Page 1",
     description: "This is page one!",
     path: "/page-one",
-    pathType: "WebPage"
+    pathType: "WebPage",
+    navData: {
+      test: "this is some test nav data!"
+    }
   },
   '/page-two': {
     content: "page-two",
     title: "Page 2",
     description: "This is page two!",
     path: "/page-two",
-    pathType: "WebPage"
+    pathType: "WebPage",
+    navData: {
+      test: "this is some test nav data!"
+    }
   },
   '/tab-one': {
     content: "tab-one",

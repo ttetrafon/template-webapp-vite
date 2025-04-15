@@ -112,7 +112,8 @@ export class Navigator {
         url: this.createCanonicalUrl(r.path),
         subroute: r.subroute
       },
-      subroute: r.subroute
+      subroute: r.subroute,
+      navData: r.navData
     };
   }
 
@@ -120,7 +121,7 @@ export class Navigator {
     // console.log(`navigateTo(${path}, ${pushState}, ${JSON.stringify(stateData)})`);
     path = this.normalisePath(path);
     const route = this.getRoute(path);
-    this.updateContent(path, route.subroute, route.content);
+    this.updateContent(path, route.subroute, route.content, route.navData);
     this.updateMetadata(route);
     if (pushState) {
       window.history.pushState({}, '', path);
@@ -128,7 +129,7 @@ export class Navigator {
   }
 
   normalisePath(path) {
-    console.log(`---> normalisePath(${ path })`);
+    // console.log(`---> normalisePath(${ path })`);
     if (path == "/") return path;
     if (path == "") return "/";
     if (path[path.length - 1] == "/") path = path.slice(0, -1);
@@ -148,12 +149,13 @@ export class Navigator {
     link.setAttribute("href", value);
   }
 
-  updateContent(path, isSubroute, content) {
+  updateContent(path, isSubroute, content, navData) {
     // console.log(`--> updateContent(${path}, ${isSubroute}, ${content})`);
     if (checkStringForNonExistence(content)) return;
 
     if (!isSubroute) {
       this.container.innerHTML = content;
+      if (navData) this.container.firstChild.setAttribute("nav-data", JSON.stringify(navData));
       return;
     }
 
