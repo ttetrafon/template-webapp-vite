@@ -2,7 +2,7 @@
   "name": "template-spa",
   "author": "ttetrafon",
   "private": true,
-  "version": "0.0.15",
+  "version": "0.0.16",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,5 +12,6 @@
   },
   "devDependencies": {
     "vite": "^6.2.5"
-  }
+  },
+  "license": "GNU-3.0"
 }
