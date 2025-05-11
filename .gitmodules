@@ -1,0 +1,9 @@
+[submodule "src/components-library"]
+	path = src/components-library
+	url = git@github.com:ttetrafon/template-webapp-vite-components-library.git
+[submodule "src/services-library"]
+	path = src/services-library
+	url = git@github.com:ttetrafon/template-webapp-vite-services-library.git
+[submodule "src/helper-library"]
+	path = src/helper-library
+	url = git@github.com:ttetrafon/template-webapp-vite-helper-library.git
