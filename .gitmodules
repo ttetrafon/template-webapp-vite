@@ -7,3 +7,6 @@
 [submodule "src/helper-library"]
 	path = src/helper-library
 	url = git@github.com:ttetrafon/template-webapp-vite-helper-library.git
+[submodule "src/model-library"]
+	path = src/model-library
+	url = git@github.com:ttetrafon/template-webapp-vite-model-library.git
