@@ -14,8 +14,8 @@ import './components/svg-wrapper.js';
 import './components/tab-1.js';
 import './components/tab-2.js';
 import './components/website-settings.js';
-import './style.css'
 import './services/spinning-circle.js';
+import './style.css'
 import state from './services/state.js';
 import { Navigator } from './services/navigator.js';
 

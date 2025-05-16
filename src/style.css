@@ -37,6 +37,8 @@
 
 body {
   display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
