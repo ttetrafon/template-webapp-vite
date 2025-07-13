@@ -16,11 +16,11 @@ import './components-library/loading-circle.js';
 import './components-library/selector-field.js';
 import './components-library/svg-wrapper.js';
 
-import './services/spinning-circle.js';
+import './services-library/spinning-circle.js';
 
 import './styles/style.css';
 
-import state from './services/state.js';
-import { Navigator } from './services/navigator.js';
+import state from './services-library/state.js';
+import { Navigator } from './services-library/navigator.js';
 
 const navigator = new Navigator('#app', 'dialog');

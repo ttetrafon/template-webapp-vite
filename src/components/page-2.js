@@ -1,6 +1,6 @@
-import { emitNavigationEvent, emitSubPageContainerEvent } from '../helper/dom.js';
+import { emitNavigationEvent, emitSubPageContainerEvent } from '../helper-library/dom.js';
 import styles from '../styles/style.css?inline';
-import state from '../services/state.js';
+import state from '../services-library/state.js';
 
 const template = document.createElement('template');
 

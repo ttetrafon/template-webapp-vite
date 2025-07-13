@@ -10,3 +10,6 @@
 [submodule "src/model-library"]
 	path = src/model-library
 	url = git@github.com:ttetrafon/template-webapp-vite-model-library.git
+[submodule "src/data-library"]
+	path = src/data-library
+	url = git@github.com:ttetrafon/template-webapp-vite-data-library.git
