@@ -1,4 +1,4 @@
-import styles from '../style.css?inline';
+import styles from '../styles/style.css?inline';
 import { eventNames } from '../data/enums';
 
 const template = document.createElement('template');

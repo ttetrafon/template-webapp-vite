@@ -1,5 +1,5 @@
 import { emitDialogEvent, emitNavigationEvent } from '../helper/dom.js';
-import styles from '../style.css?inline';
+import styles from '../styles/style.css?inline';
 import state from '../services/state.js';
 
 const template = document.createElement('template');

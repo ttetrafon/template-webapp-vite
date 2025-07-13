@@ -1,4 +1,4 @@
-import styles from '../style.css?inline';
+import styles from '../styles/style.css?inline';
 import { selectorData } from '../data/data.js';
 import { populateSelectorOptions } from '../helper/dom.js';
 

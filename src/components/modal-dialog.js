@@ -1,5 +1,5 @@
 import { emitDialogCancelEvent, emitDialogConfirmEvent } from '../helper/dom';
-import styles from '../style.css?inline';
+import styles from '../styles/style.css?inline';
 
 const template = document.createElement('template');
 
