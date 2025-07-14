@@ -10,6 +10,7 @@ import './components/tab-1.js';
 import './components/tab-2.js';
 import './components/website-settings.js';
 
+import './components-library/404.js';
 import './components-library/button-text-image.js';
 import './components-library/input-field.js';
 import './components-library/loading-circle.js';

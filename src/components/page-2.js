@@ -6,7 +6,7 @@ const template = document.createElement('template');
 
 template.innerHTML = /*html*/`
 <style>
-  ${styles}
+  ${ styles }
 
   :host {
     display: block;
@@ -40,10 +40,6 @@ class Component extends HTMLElement {
     // Access happens through ths `shadowroot` property in the host.
     this._shadow.appendChild(template.content.cloneNode(true));
 
-    this.followLinkBound = this.followLink.bind(this);
-    this.switchToTabBoundTabOne = this.switchToTab.bind(this, "/page-two/tab-one");
-    this.switchToTabBoundTabTwo = this.switchToTab.bind(this, "/page-two/tab-two");
-
     this.$navLink = this._shadow.querySelector('.nav-link');
     this.$tab1 = this._shadow.getElementById("tab1");
     this.$tab2 = this._shadow.getElementById("tab2");
@@ -64,7 +60,7 @@ class Component extends HTMLElement {
   attributeChangedCallback(name, oldVal, newVal) {
     // Attribute value changes can be tied to any type of functionality through the lifecycle methods.
     if (oldVal == newVal) return;
-    switch(name) {
+    switch (name) {
       default:
         break;
     }
@@ -72,6 +68,10 @@ class Component extends HTMLElement {
   connectedCallback() {
     // Triggered when the component is added to the DOM.
     emitSubPageContainerEvent(this.$tabContainer, "/page-two");
+
+    this.followLinkBound = this.followLink.bind(this);
+    this.switchToTabBoundTabOne = this.switchToTab.bind(this, "/page-two/tab-one", this.$tabContainer);
+    this.switchToTabBoundTabTwo = this.switchToTab.bind(this, "/page-two/tab-two", this.$tabContainer);
 
     this.$navLink.addEventListener('click', this.followLinkBound);
     this.$tab1.addEventListener('click', this.switchToTabBoundTabOne);
@@ -84,13 +84,17 @@ class Component extends HTMLElement {
     this.$navLink.removeEventListener('click', this.followLinkBound);
     this.$tab1.removeEventListener('click', this.switchToTabBoundTabOne);
     this.$tab2.removeEventListener('click', this.switchToTabBoundTabTwo);
-}
+  }
   adoptedCallback() {
     // Triggered when the element is adopted through `document.adoptElement()` (like when using an <iframe/>).
     // Note that adoption does not trigger the constructor again.
   }
 
-    /**
+  declareSubContainer() {
+    return this.$tabContainer;
+  }
+
+  /**
    *
    * @param {Event} event
    */
@@ -103,9 +107,10 @@ class Component extends HTMLElement {
    *
    * @param {Event} event
    */
-  switchToTab(path, event) {
+  switchToTab(path, container, event) {
+    console.log("---> switchToTab()", path, container, event);
     event.stopImmediatePropagation();
-    emitNavigationEvent(event.target, path);
+    emitNavigationEvent(event.target, path, container);
   }
 }
 
