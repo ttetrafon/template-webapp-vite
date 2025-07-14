@@ -40,6 +40,10 @@ class Component extends HTMLElement {
     // Access happens through ths `shadowroot` property in the host.
     this._shadow.appendChild(template.content.cloneNode(true));
 
+    this.followLinkBound = this.followLink.bind(this);
+    this.switchToTabBoundTabOne = this.switchToTab.bind(this, "/page-two/tab-one");
+    this.switchToTabBoundTabTwo = this.switchToTab.bind(this, "/page-two/tab-two");
+
     this.$navLink = this._shadow.querySelector('.nav-link');
     this.$tab1 = this._shadow.getElementById("tab1");
     this.$tab2 = this._shadow.getElementById("tab2");
@@ -69,17 +73,17 @@ class Component extends HTMLElement {
     // Triggered when the component is added to the DOM.
     emitSubPageContainerEvent(this.$tabContainer, "/page-two");
 
-    this.$navLink.addEventListener('click', this.followLink.bind(this));
-    this.$tab1.addEventListener('click', this.switchToTab.bind(this, "/page-two/tab-one"));
-    this.$tab2.addEventListener('click', this.switchToTab.bind(this, "/page-two/tab-two"));
+    this.$navLink.addEventListener('click', this.followLinkBound);
+    this.$tab1.addEventListener('click', this.switchToTabBoundTabOne);
+    this.$tab2.addEventListener('click', this.switchToTabBoundTabTwo);
   }
   disconnectedCallback() {
     // Triggered when the component is removed from the DOM.
     // Ideal place for cleanup code.
     // Note that when destroying a component, it is good to also release any listeners.
-    this.$navLink.removeEventListener('click', this.followLink);
-    this.$tab1.removeEventListener('click', this.switchToTab);
-    this.$tab2.removeEventListener('click', this.switchToTab);
+    this.$navLink.removeEventListener('click', this.followLinkBound);
+    this.$tab1.removeEventListener('click', this.switchToTabBoundTabOne);
+    this.$tab2.removeEventListener('click', this.switchToTabBoundTabTwo);
 }
   adoptedCallback() {
     // Triggered when the element is adopted through `document.adoptElement()` (like when using an <iframe/>).

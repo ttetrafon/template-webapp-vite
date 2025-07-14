@@ -58,6 +58,9 @@ class Component extends HTMLElement {
     this.SETTINGS_GENERAL_PANEL = "settings-general-panel";
     this.SETTINGS_ACCESSIBILITY_PANEL = "settings-accessibility-panel";
 
+    this.settingButtonClickedBoundSettingsGeneralPanel = this.settingButtonClicked.bind(this, this.SETTINGS_GENERAL_PANEL);
+    this.settingButtonClickedBoundSettingsAccessibilityPanel = this.settingButtonClicked.bind(this, this.SETTINGS_ACCESSIBILITY_PANEL);
+
     this.$panels = {};
   }
 
@@ -85,15 +88,15 @@ class Component extends HTMLElement {
     this.$panels[this.SETTINGS_GENERAL_PANEL] = this._shadow.querySelector(this.SETTINGS_GENERAL_PANEL);
     this.$panels[this.SETTINGS_ACCESSIBILITY_PANEL] = this._shadow.querySelector(this.SETTINGS_ACCESSIBILITY_PANEL);
 
-    document.addEventListener(eventNames.BUTTON_SETTINGS.description, this.settingButtonClicked.bind(this, this.SETTINGS_GENERAL_PANEL));
-    document.addEventListener(eventNames.BUTTON_ACCESSIBILITY.description, this.settingButtonClicked.bind(this, this.SETTINGS_ACCESSIBILITY_PANEL));
+    document.addEventListener(eventNames.BUTTON_SETTINGS.description, this.settingButtonClickedBoundSettingsGeneralPanel);
+    document.addEventListener(eventNames.BUTTON_ACCESSIBILITY.description, this.settingButtonClickedBoundSettingsAccessibilityPanel);
   }
   disconnectedCallback() {
     // Triggered when the component is removed from the DOM.
     // Ideal place for cleanup code.
     // Note that when destroying a component, it is good to also release any listeners.
-    document.removeEventListener(eventNames.BUTTON_SETTINGS.description, this.settingButtonClicked);
-    document.removeEventListener(eventNames.BUTTON_ACCESSIBILITY.description, this.settingButtonClicked);
+    document.removeEventListener(eventNames.BUTTON_SETTINGS.description, this.settingButtonClickedBoundSettingsGeneralPanel);
+    document.removeEventListener(eventNames.BUTTON_ACCESSIBILITY.description, this.settingButtonClickedBoundSettingsAccessibilityPanel);
   }
   adoptedCallback() {
     // Triggered when the element is adopted through `document.adoptElement()` (like when using an <iframe/>).
