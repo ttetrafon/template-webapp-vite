@@ -1,6 +1,7 @@
 import { emitNavigationEvent, emitSubPageContainerEvent } from '../helper-library/dom.js';
 import styles from '../styles/style.css?inline';
 import state from '../services-library/state.js';
+import { generalNames } from '../data-library/enums.js';
 
 const template = document.createElement('template');
 
@@ -30,6 +31,11 @@ template.innerHTML = /*html*/`
 </div>
 
 <section id="tab-container"></section>
+
+<hr>
+
+<h2>State</h2>
+<p>User role: <span id="user-role-display">?</span></p>
 `;
 
 class Component extends HTMLElement {
@@ -44,6 +50,8 @@ class Component extends HTMLElement {
     this.$tab1 = this._shadow.getElementById("tab1");
     this.$tab2 = this._shadow.getElementById("tab2");
     this.$tabContainer = this._shadow.getElementById("tab-container");
+
+    this.$userRole = this._shadow.getElementById("user-role-display");
   }
 
   // Attributes need to be observed to be tied to the lifecycle change callback.
@@ -76,6 +84,11 @@ class Component extends HTMLElement {
     this.$navLink.addEventListener('click', this.followLinkBound);
     this.$tab1.addEventListener('click', this.switchToTabBoundTabOne);
     this.$tab2.addEventListener('click', this.switchToTabBoundTabTwo);
+
+    state.subscribeToObservable(generalNames.OBSERVABLE_USER.description, "page-2", this.userUpdatedCallback.bind(this));
+    state.getValueFromObservable(generalNames.OBSERVABLE_USER.description, "role").then((role) => {
+      this.$userRole.textContent = role;
+    });
   }
   disconnectedCallback() {
     // Triggered when the component is removed from the DOM.
@@ -111,6 +124,15 @@ class Component extends HTMLElement {
     console.log("---> switchToTab()", path, container, event);
     event.stopImmediatePropagation();
     emitNavigationEvent(event.target, path, container);
+  }
+
+  async userUpdatedCallback(subscriber, property, newValue) {
+    console.log(`---> userUpdatedCallback(${subscriber}, ${property}, ${newValue})`);
+    switch(property) {
+      case "role":
+        this.$userRole.textContent = newValue;
+        break;
+    }
   }
 }
 
