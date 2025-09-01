@@ -101,7 +101,7 @@ class Component extends HTMLElement {
 
     setTimeout(() => {
       state.updateObservable(generalNames.OBSERVABLE_USER.description, "role", roles.ADMIN.description);
-    }, 2500);
+    }, 500);
   }
   disconnectedCallback() {
     // Triggered when the component is removed from the DOM.
@@ -141,7 +141,7 @@ class Component extends HTMLElement {
   }
 
   async userUpdatedCallback(subscriber, property, newValue) {
-    console.log(`---> userUpdatedCallback(${subscriber}, ${property}, ${newValue})`);
+    // console.log(`---> userUpdatedCallback(${subscriber}, ${property}, ${newValue})`);
     switch(property) {
       case "role":
         this.$userRole.textContent = newValue;

@@ -121,13 +121,15 @@ class Component extends HTMLElement {
    * @param {Event} event
    */
   switchToTab(path, container, event) {
-    console.log("---> switchToTab()", path, container, event);
+    // console.log("---> switchToTab()", path, container, event);
     event.stopImmediatePropagation();
     emitNavigationEvent(event.target, path, container);
   }
 
   async userUpdatedCallback(subscriber, property, newValue) {
-    console.log(`---> userUpdatedCallback(${subscriber}, ${property}, ${newValue})`);
+    // console.log(`---> userUpdatedCallback(${subscriber}, ${property}, ${newValue})`);
+    if (subscriber != "page-2") return;
+
     switch(property) {
       case "role":
         this.$userRole.textContent = newValue;
