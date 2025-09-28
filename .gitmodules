@@ -1,15 +1,3 @@
-[submodule "src/components-library"]
-	path = src/components-library
-	url = git@github.com:ttetrafon/template-webapp-vite-components-library.git
-[submodule "src/services-library"]
-	path = src/services-library
-	url = git@github.com:ttetrafon/template-webapp-vite-services-library.git
-[submodule "src/helper-library"]
-	path = src/helper-library
-	url = git@github.com:ttetrafon/template-webapp-vite-helper-library.git
-[submodule "src/model-library"]
-	path = src/model-library
-	url = git@github.com:ttetrafon/template-webapp-vite-model-library.git
-[submodule "src/data-library"]
-	path = src/data-library
-	url = git@github.com:ttetrafon/template-webapp-vite-data-library.git
+[submodule "src/library"]
+	path = src/library
+	url = git@github.com:ttetrafon/template-webapp-vite-library.git
