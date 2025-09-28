@@ -1,7 +1,7 @@
-import { emitNavigationEvent, emitSubPageContainerEvent } from '../helper-library/dom.js';
+import { emitNavigationEvent, emitSubPageContainerEvent } from '../library/helper/dom.js';
 import styles from '../styles/style.css?inline';
-import state from '../services-library/state.js';
-import { generalNames } from '../data-library/enums.js';
+import state from '../library/services/state.js';
+import { generalNames } from '../library/data/enums.js';
 
 const template = document.createElement('template');
 

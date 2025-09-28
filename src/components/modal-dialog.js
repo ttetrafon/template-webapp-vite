@@ -1,4 +1,4 @@
-import { emitDialogCancelEvent, emitDialogConfirmEvent } from '../helper-library/dom.js';
+import { emitDialogCancelEvent, emitDialogConfirmEvent } from '../library/helper/dom.js';
 import styles from '../styles/style.css?inline';
 
 const template = document.createElement('template');

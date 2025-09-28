@@ -1,6 +1,6 @@
 import styles from '../styles/style.css?inline';
 import { selectorData } from '../data/data.js';
-import { populateSelectorOptions } from '../helper-library/dom.js';
+import { populateSelectorOptions } from '../library/helper/dom.js';
 
 const template = document.createElement('template');
 

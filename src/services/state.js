@@ -1,4 +1,4 @@
-import { generalNames } from "../data/enums.js";
+import { generalNames } from "../library/data/enums.js";
 import { roles, User } from "../model/user.js";
 
 class State {

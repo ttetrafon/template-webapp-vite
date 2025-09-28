@@ -1,5 +1,5 @@
 import styles from '../styles/style.css?inline';
-import { eventNames } from '../data-library/enums.js';
+import { eventNames } from '../library/data/enums.js';
 
 const template = document.createElement('template');
 

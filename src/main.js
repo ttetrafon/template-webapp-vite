@@ -10,18 +10,18 @@ import './components/tab-1.js';
 import './components/tab-2.js';
 import './components/website-settings.js';
 
-import './components-library/404.js';
-import './components-library/button-text-image.js';
-import './components-library/input-field.js';
-import './components-library/loading-circle.js';
-import './components-library/selector-field.js';
-import './components-library/svg-wrapper.js';
+import './library/components/404.js';
+import './library/components/button-text-image.js';
+import './library/components/input-field.js';
+import './library/components/loading-circle.js';
+import './library/components/selector-field.js';
+import './library/components/svg-wrapper.js';
 
-import './services-library/spinning-circle.js';
+import './library/services/spinning-circle.js';
 
 import './styles/style.css';
 
-import state from './services-library/state.js';
-import { Navigator } from './services-library/navigator.js';
+import state from './library/services/state.js';
+import { Navigator } from './library/services/navigator.js';
 
 const navigator = new Navigator('#app', 'dialog');
