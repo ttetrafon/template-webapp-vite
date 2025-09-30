@@ -1,6 +1,7 @@
 import './components/modal-dialog.js';
 import './components/page-1.js';
 import './components/page-2.js';
+import './components/page-3.js';
 import './components/png-wrapper.js';
 import './components/radio-group.js';
 import './components/radio-option.js';
@@ -15,6 +16,7 @@ import './library/components/button-text-image.js';
 import './library/components/input-field.js';
 import './library/components/loading-circle.js';
 import './library/components/selector-field.js';
+import './library/components/shop-filter.js';
 import './library/components/svg-wrapper.js';
 
 import './library/services/spinning-circle.js';

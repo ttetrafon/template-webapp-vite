@@ -1,0 +1,38 @@
+[
+  {
+    "id": "c998658b-201b-4821-8e07-341fdcbff4b8",
+    "display": "Κατασκευαστές",
+    "type": "radio-multi",
+    "values": [
+      {
+        "id": "99c4d2bc-a62d-404a-96ba-3ed056c6b45d",
+        "display": "BOSCH",
+        "img": "./partners/logo-bosch.png"
+      },
+      {
+        "id": "30d8b570-2f59-4c82-95b0-c66b969e4a5c",
+        "display": "TENAX",
+        "img": "./partners/logo-tenax.png"
+      }
+    ]
+  },
+  {
+    "id": "d84b252e-1729-4e86-b044-37f6f93d8623",
+    "display": "Διαθεσιμότητα",
+    "type": "radio",
+    "values": [
+      {
+        "id": "",
+        "display": "Άμεσα διαθέσιμο"
+      },
+      {
+        "id": "",
+        "display": "Διαθέσιμο κατόπιν παραγγελίας"
+      },
+      {
+        "id": "",
+        "display": "Εξαντλήθηκε"
+      }
+    ]
+  }
+]

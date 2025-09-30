@@ -17,6 +17,15 @@ export const routes = {
       test: "this is some test nav data!"
     }
   },
+  'page-three': {
+    content: "page-three",
+    title: "Page 3",
+    description: "This is page three!",
+    pathType: "WebPage",
+    navData: {
+      test: "this is some test nav data!"
+    }
+  },
   'tab-one': {
     content: "tab-one",
     title: "Tab 1",

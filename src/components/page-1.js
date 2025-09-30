@@ -28,7 +28,8 @@ template.innerHTML = /*html*/`
 </style>
 
 <h1>Page 1</h1>
-<a href="/page-two" class="nav-link">Go to Page Two</a>
+<a href="/page-two" class="nav-link-2">Go to Page Two</a>
+<a href="/page-three" class="nav-link-3">Go to Page Three</a>
 
 <hr>
 
@@ -61,10 +62,8 @@ class Component extends HTMLElement {
     // Access happens through ths `shadowroot` property in the host.
     this._shadow.appendChild(template.content.cloneNode(true));
 
-    this.followLinkBound = this.followLink.bind(this);
-    this.openModalBound = this.openModal.bind(this);
-
-    this.$navLink = this._shadow.querySelector(".nav-link");
+    this.$navLink2 = this._shadow.querySelector(".nav-link-2");
+    this.$navLink3 = this._shadow.querySelector(".nav-link-3");
     this.$modalBtn = this._shadow.getElementById("open-modal");
 
     this.$userRole = this._shadow.getElementById("user-role-display");
@@ -91,7 +90,12 @@ class Component extends HTMLElement {
   }
   connectedCallback() {
     // Triggered when the component is added to the DOM.
-    this.$navLink.addEventListener('click', this.followLinkBound);
+    this.followLink2Bound = this.followLink.bind(this, '/page-two');
+    this.followLink3Bound = this.followLink.bind(this, '/page-three');
+    this.openModalBound = this.openModal.bind(this);
+
+    this.$navLink2.addEventListener('click', this.followLink2Bound);
+    this.$navLink3.addEventListener('click', this.followLink3Bound);
     this.$modalBtn.addEventListener('click', this.openModalBound);
 
     state.subscribeToObservable(generalNames.OBSERVABLE_USER.description, "page-1", this.userUpdatedCallback.bind(this));
@@ -107,7 +111,8 @@ class Component extends HTMLElement {
     // Triggered when the component is removed from the DOM.
     // Ideal place for cleanup code.
     // Note that when destroying a component, it is good to also release any listeners.
-    this.$navLink.removeEventListener('click', this.followLinkBound);
+    this.$navLink2.removeEventListener('click', this.followLink2Bound);
+    this.$navLink3.removeEventListener('click', this.followLink3Bound);
     this.$modalBtn.removeEventListener('click', this.openModalBound);
   }
   adoptedCallback() {
@@ -119,9 +124,10 @@ class Component extends HTMLElement {
    *
    * @param {Event} event
    */
-  followLink(event) {
+  followLink(event, page) {
     event.preventDefault();
-    emitNavigationEvent(this.$navLink, '/page-two');
+    event.stopImmediatePropagation();
+    emitNavigationEvent(this.$navLink, page);
   }
 
   /**
