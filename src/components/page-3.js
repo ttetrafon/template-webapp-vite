@@ -1,3 +1,4 @@
+import { jsonRequest } from '../library/helper/requests';
 import styles from '../styles/style.css?inline';
 
 const _name = 'page-three';
@@ -13,6 +14,10 @@ template.innerHTML = /*html*/`
     flex-flow: column nowrap;
     align-items: center;
   }
+
+  content-filters {
+    margin-top: 20px;
+  }
 </style>
 
 <h1>Page 3</h1>
@@ -20,6 +25,10 @@ template.innerHTML = /*html*/`
 <a href="/page-two" class="nav-link-2">Go to Page Two</a>
 
 <hr/>
+
+<content-filters
+  label="Filters"
+></content-filters>
 `;
 
 class Component extends HTMLElement {
@@ -32,6 +41,8 @@ class Component extends HTMLElement {
 
     this.$navLink1 = this._shadow.querySelector('.nav-link-1');
     this.$navLink2 = this._shadow.querySelector('.nav-link-2');
+
+    this.$contentFilter = this._shadow.querySelector('content-filters');
   }
 
   // Attributes need to be observed to be tied to the lifecycle change callback.
@@ -67,6 +78,8 @@ class Component extends HTMLElement {
 
     this.$navLink1.addEventListener('click', this.followLink1Bound);
     this.$navLink2.addEventListener('click', this.followLink2Bound);
+
+    this.getFilterData();
   }
   /**
    * Triggered when the component is removed from the DOM.
@@ -93,6 +106,11 @@ class Component extends HTMLElement {
     event.preventDefault();
     event.stopImmediatePropagation();
     emitNavigationEvent(this.$navLink, page);
+  }
+
+  async getFilterData() {
+    const filterData = await jsonRequest("./data/filters.json");
+    this.$contentFilter.setAttribute("data", JSON.stringify(filterData));
   }
 }
 

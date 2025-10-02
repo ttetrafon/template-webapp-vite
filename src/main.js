@@ -13,10 +13,10 @@ import './components/website-settings.js';
 
 import './library/components/404.js';
 import './library/components/button-text-image.js';
+import './library/components/content-filters.js';
 import './library/components/input-field.js';
 import './library/components/loading-circle.js';
 import './library/components/selector-field.js';
-import './library/components/shop-filter.js';
 import './library/components/svg-wrapper.js';
 
 import './library/services/spinning-circle.js';
