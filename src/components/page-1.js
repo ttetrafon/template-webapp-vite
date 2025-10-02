@@ -25,6 +25,40 @@ template.innerHTML = /*html*/`
     margin-top: 20px;
     width: 5em;
   }
+
+  #background-and-text {
+    width: 560px;
+    aspect-ratio: 2/1;
+    background-size: cover;
+    background-position: center;
+    background-image:
+      linear-gradient(rgba(37, 37, 37, 0.33) 0 0),
+      url("./images/Cavern_wide.jpg");
+    padding: 16px;
+    border-radius: 24px;
+  }
+
+  #background-and-text h1, #background-and-text {
+    color: var(--colour-quaternary);
+    margin-bottom: 24px;
+  }
+
+  #background-and-text button {
+    margin-top: 24px;
+    color: var(--colour-primary);
+    padding: 0.5em 1.25em;
+    border-radius: 16px;
+    border: 5px solid transparent;
+    background:
+      linear-gradient(white) padding-box,
+      conic-gradient(orange, blue, orange) border-box;
+  }
+
+  #background-and-text button:hover {
+    color: var(--colour-quaternary);
+    background:
+      conic-gradient(orange, blue, orange) border-box;
+  }
 </style>
 
 <h1>Page 1</h1>
@@ -46,6 +80,14 @@ template.innerHTML = /*html*/`
   label="Aeroplane"
   image="Airplane_1"
 ></png-wrapper>
+
+<hr>
+
+<section id="background-and-text">
+  <h1>Single Colour Gradient Background Overlay</h1>
+  <p>Text can be made clear with adding a single colour gradient in front of a background.</p>
+  <button>Gradient Border!</button>
+</section>
 
 <hr>
 
