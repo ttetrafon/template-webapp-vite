@@ -1,3 +1,4 @@
+import { eventNames } from '../library/data/enums';
 import { jsonRequest } from '../library/helper/requests';
 import styles from '../styles/style.css?inline';
 
@@ -13,6 +14,7 @@ template.innerHTML = /*html*/`
     width: 100%;
     flex-flow: column nowrap;
     align-items: center;
+    min-width: 300px;
   }
 
   content-filters {
@@ -27,7 +29,7 @@ template.innerHTML = /*html*/`
 <hr/>
 
 <content-filters
-  label="Filters"
+  label="Φίλτρα"
 ></content-filters>
 `;
 
@@ -43,6 +45,7 @@ class Component extends HTMLElement {
     this.$navLink2 = this._shadow.querySelector('.nav-link-2');
 
     this.$contentFilter = this._shadow.querySelector('content-filters');
+    this.debugFilterEvents();
   }
 
   // Attributes need to be observed to be tied to the lifecycle change callback.
@@ -111,6 +114,16 @@ class Component extends HTMLElement {
   async getFilterData() {
     const filterData = await jsonRequest("./data/filters.json");
     this.$contentFilter.setAttribute("data", JSON.stringify(filterData));
+  }
+
+  async debugFilterEvents() {
+    [
+      eventNames.CONTENT_FILTER_CLEAR.description
+    ].forEach(eventName => {
+      this.$contentFilter.addEventListener(eventName, (event) => {
+        console.log(`[DEBUG] Event captured on '${_name}' shadowRoot: Type: ${event.type}, Target:`, event.target);
+      }, true);
+    });
   }
 }
 
