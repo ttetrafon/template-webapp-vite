@@ -11,7 +11,7 @@
     "build and preview": "npm run build && npm run preview"
   },
   "devDependencies": {
-    "vite": "^7.1.7"
+    "vite": "^7.1.9"
   },
   "license": "GNU-3.0",
   "dependencies": {
