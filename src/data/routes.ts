@@ -1,4 +1,12 @@
-export const routes = {
+interface Route {
+  content: string;
+  title: string;
+  description: string;
+  pathType: string;
+  navData?: Record<string, unknown>;
+}
+
+export const routes: Record<string, Route> = {
   'page-one': {
     content: 'page-one',
     title: "Page 1",
@@ -46,6 +54,6 @@ export const routes = {
   }
 }
 
-export const aliases = {
+export const aliases: Record<string, string> = {
   '/': '/page-one'
 }

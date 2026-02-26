@@ -132,3 +132,6 @@ dist
 # Vite
 dist-ssr
 *.local
+
+# Wrangler
+.wrangler/

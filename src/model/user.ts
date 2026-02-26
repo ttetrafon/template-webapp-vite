@@ -4,11 +4,11 @@ export const roles = Object.freeze({
 });
 
 export class User {
-  id;
-  name;
-  role;
+  id: string | number;
+  name: string;
+  role: symbol;
 
-  constructor(id, name, role) {
+  constructor(id: string | number, name: string, role: symbol) {
     // console.log(`---> new User(${id}, ${name}, ${role}))`);
     this.id = id;
     this.name = name;

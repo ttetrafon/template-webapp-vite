@@ -1,7 +1,7 @@
-import { emitNavigationEvent, emitSubPageContainerEvent } from '../library/helper/dom.js';
+import { emitNavigationEvent, emitSubPageContainerEvent } from '../library/helper/dom.ts';
 import styles from '../styles/style.css?inline';
-import state from '../library/services/state.js';
-import { generalNames } from '../library/data/enums.js';
+import state from '../library/services/state.ts';
+import { generalNames } from '../library/data/enums.ts';
 
 const template = document.createElement('template');
 
@@ -42,35 +42,40 @@ template.innerHTML = /*html*/`
 `;
 
 class Component extends HTMLElement {
+  private _shadow: ShadowRoot;
+  private $navLink1: HTMLAnchorElement;
+  private $navLink3: HTMLAnchorElement;
+  private $tab1: HTMLButtonElement;
+  private $tab2: HTMLButtonElement;
+  private $tabContainer: HTMLElement;
+  private $userRole: HTMLElement;
+  private followLink1Bound!: (e: Event) => void;
+  private followLink3Bound!: (e: Event) => void;
+  private switchToTabBoundTabOne!: (e: Event) => void;
+  private switchToTabBoundTabTwo!: (e: Event) => void;
+
   constructor() {
     super();
     this._shadow = this.attachShadow({ mode: 'closed' });
-    // The mode can be set to 'open' if we need the document to be able to access the shadow-dom internals.
-    // Access happens through ths `shadowroot` property in the host.
     this._shadow.appendChild(template.content.cloneNode(true));
 
-    this.$navLink1 = this._shadow.querySelector('.nav-link-1');
-    this.$navLink3 = this._shadow.querySelector('.nav-link-3');
-    this.$tab1 = this._shadow.getElementById("tab1");
-    this.$tab2 = this._shadow.getElementById("tab2");
-    this.$tabContainer = this._shadow.getElementById("tab-container");
-
-    this.$userRole = this._shadow.getElementById("user-role-display");
+    this.$navLink1 = this._shadow.querySelector('.nav-link-1')!;
+    this.$navLink3 = this._shadow.querySelector('.nav-link-3')!;
+    this.$tab1 = this._shadow.getElementById("tab1") as HTMLButtonElement;
+    this.$tab2 = this._shadow.getElementById("tab2") as HTMLButtonElement;
+    this.$tabContainer = this._shadow.getElementById("tab-container")!;
+    this.$userRole = this._shadow.getElementById("user-role-display")!;
   }
 
-  // Attributes need to be observed to be tied to the lifecycle change callback.
   static get observedAttributes() { return ['label', 'data']; }
 
-  // Attribute values are always strings, so we need to convert them in their getter/setters as appropriate.
-  get data() { return JSON.parse(this.getAttribute('data')); }
+  get data() { return JSON.parse(this.getAttribute('data')!); }
   get label() { return this.getAttribute('label'); }
 
-  set data(value) { this.setAttribute('data', value); }
-  set label(value) { this.setAttribute('label', value); }
+  set data(value: unknown) { this.setAttribute('data', value as string); }
+  set label(value: string | null) { this.setAttribute('label', value!); }
 
-  // A web component implements the following lifecycle methods.
-  attributeChangedCallback(name, oldVal, newVal) {
-    // Attribute value changes can be tied to any type of functionality through the lifecycle methods.
+  attributeChangedCallback(name: string, oldVal: string, newVal: string) {
     if (oldVal == newVal) return;
     switch (name) {
       default:
@@ -78,7 +83,6 @@ class Component extends HTMLElement {
     }
   }
   connectedCallback() {
-    // Triggered when the component is added to the DOM.
     emitSubPageContainerEvent(this.$tabContainer, "/page-two");
 
     this.followLink1Bound = this.followLink.bind(this, '/page-one');
@@ -91,57 +95,42 @@ class Component extends HTMLElement {
     this.$tab1.addEventListener('click', this.switchToTabBoundTabOne);
     this.$tab2.addEventListener('click', this.switchToTabBoundTabTwo);
 
-    state.subscribeToObservable(generalNames.OBSERVABLE_USER.description, "page-2", this.userUpdatedCallback.bind(this));
-    state.getValueFromObservable(generalNames.OBSERVABLE_USER.description, "role").then((role) => {
-      this.$userRole.textContent = role;
+    state.subscribeToObservable(generalNames.OBSERVABLE_USER.description!, "page-2", this.userUpdatedCallback.bind(this));
+    state.getValueFromObservable(generalNames.OBSERVABLE_USER.description!, "role").then((role) => {
+      this.$userRole.textContent = role as string;
     });
   }
   disconnectedCallback() {
-    // Triggered when the component is removed from the DOM.
-    // Ideal place for cleanup code.
-    // Note that when destroying a component, it is good to also release any listeners.
     this.$navLink1.removeEventListener('click', this.followLink1Bound);
     this.$navLink3.removeEventListener('click', this.followLink3Bound);
     this.$tab1.removeEventListener('click', this.switchToTabBoundTabOne);
     this.$tab2.removeEventListener('click', this.switchToTabBoundTabTwo);
   }
   adoptedCallback() {
-    // Triggered when the element is adopted through `document.adoptElement()` (like when using an <iframe/>).
-    // Note that adoption does not trigger the constructor again.
   }
 
   declareSubContainer() {
     return this.$tabContainer;
   }
 
-  /**
-   *
-   * @param {Event} event
-   * @param {String} page
-   */
-  followLink(event, page) {
+  followLink(page: string, event: Event) {
     event.preventDefault();
-    emitNavigationEvent(this.$navLink, page);
+    emitNavigationEvent(this.$navLink1, page);
   }
 
-  /**
-   *
-   * @param {Event} event
-   */
-  switchToTab(path, container, event) {
+  switchToTab(path: string, container: HTMLElement, event: Event) {
     // console.log("---> switchToTab()", path, container, event);
     event.stopImmediatePropagation();
-    event.stopImmediatePropagation();
-    emitNavigationEvent(event.target, path, container);
+    emitNavigationEvent((event as MouseEvent).target as EventTarget, path, container);
   }
 
-  async userUpdatedCallback(subscriber, property, newValue) {
+  async userUpdatedCallback(subscriber: string, property: string, newValue: unknown) {
     // console.log(`---> userUpdatedCallback(${subscriber}, ${property}, ${newValue})`);
     if (subscriber != "page-2") return;
 
     switch(property) {
       case "role":
-        this.$userRole.textContent = newValue;
+        this.$userRole.textContent = newValue as string;
         break;
     }
   }

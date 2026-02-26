@@ -1,4 +1,4 @@
-import { emitDialogCancelEvent, emitDialogConfirmEvent } from '../library/helper/dom.js';
+import { emitDialogCancelEvent, emitDialogConfirmEvent } from '../library/helper/dom.ts';
 import styles from '../styles/style.css?inline';
 
 const template = document.createElement('template');
@@ -20,33 +20,33 @@ template.innerHTML = /*html*/`
 `;
 
 class Component extends HTMLElement {
+  private _shadow: ShadowRoot;
+  private confirmDialogBound: (e: Event) => void;
+  private cancelDialogBound: (e: Event) => void;
+  private $okBtn: HTMLButtonElement;
+  private $cancelBtn: HTMLButtonElement;
+
   constructor() {
     super();
     this._shadow = this.attachShadow({ mode: 'closed' });
-    // The mode can be set to 'open' if we need the document to be able to access the shadow-dom internals.
-    // Access happens through ths `shadowroot` property in the host.
     this._shadow.appendChild(template.content.cloneNode(true));
 
     this.confirmDialogBound = this.confirmDialog.bind(this);
     this.cancelDialogBound = this.cancelDialog.bind(this);
 
-    this.$okBtn = this._shadow.getElementById("ok");
-    this.$cancelBtn = this._shadow.getElementById("cancel");
+    this.$okBtn = this._shadow.getElementById("ok") as HTMLButtonElement;
+    this.$cancelBtn = this._shadow.getElementById("cancel") as HTMLButtonElement;
   }
 
-  // Attributes need to be observed to be tied to the lifecycle change callback.
   static get observedAttributes() { return ['label', 'data']; }
 
-  // Attribute values are always strings, so we need to convert them in their getter/setters as appropriate.
-  get data() { return JSON.parse(this.getAttribute('data')); }
+  get data() { return JSON.parse(this.getAttribute('data')!); }
   get label() { return this.getAttribute('label'); }
 
-  set data(value) { this.setAttribute('data', value); }
-  set label(value) { this.setAttribute('label', value); }
+  set data(value: unknown) { this.setAttribute('data', value as string); }
+  set label(value: string | null) { this.setAttribute('label', value!); }
 
-  // A web component implements the following lifecycle methods.
-  attributeChangedCallback(name, oldVal, newVal) {
-    // Attribute value changes can be tied to any type of functionality through the lifecycle methods.
+  attributeChangedCallback(name: string, oldVal: string, newVal: string) {
     if (oldVal == newVal) return;
     switch (name) {
       default:
@@ -54,29 +54,23 @@ class Component extends HTMLElement {
     }
   }
   connectedCallback() {
-    // Triggered when the component is added to the DOM.
     this.$okBtn.addEventListener('click', this.confirmDialogBound);
     this.$cancelBtn.addEventListener('click', this.cancelDialogBound);
   }
   disconnectedCallback() {
-    // Triggered when the component is removed from the DOM.
-    // Ideal place for cleanup code.
-    // Note that when destroying a component, it is good to also release any listeners.
     this.$okBtn.removeEventListener('click', this.confirmDialogBound);
     this.$cancelBtn.removeEventListener('click', this.cancelDialogBound);
   }
   adoptedCallback() {
-    // Triggered when the element is adopted through `document.adoptElement()` (like when using an <iframe/>).
-    // Note that adoption does not trigger the constructor again.
   }
 
-  cancelDialog(event) {
+  cancelDialog(event: Event) {
     event.stopImmediatePropagation();
     console.log("... clicked cancel button!")
     emitDialogCancelEvent(this.$cancelBtn);
   }
 
-  confirmDialog(event) {
+  confirmDialog(event: Event) {
     event.stopImmediatePropagation();
     console.log("... clicked ok button!")
     emitDialogConfirmEvent(this.$okBtn, {

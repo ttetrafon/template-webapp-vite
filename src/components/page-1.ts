@@ -1,8 +1,8 @@
-import { emitDialogEvent, emitNavigationEvent } from '../library/helper/dom.js';
+import { emitDialogEvent, emitNavigationEvent } from '../library/helper/dom.ts';
 import styles from '../styles/style.css?inline';
-import state from '../library/services/state.js';
-import { generalNames } from '../library/data/enums.js';
-import { roles } from '../model/user.js';
+import state from '../library/services/state.ts';
+import { generalNames } from '../library/data/enums.ts';
+import { roles } from '../model/user.ts';
 
 const template = document.createElement('template');
 
@@ -97,33 +97,35 @@ template.innerHTML = /*html*/`
 `;
 
 class Component extends HTMLElement {
+  private _shadow: ShadowRoot;
+  private $navLink2: HTMLAnchorElement;
+  private $navLink3: HTMLAnchorElement;
+  private $modalBtn: HTMLButtonElement;
+  private $userRole: HTMLElement;
+  private followLink2Bound!: (e: Event) => void;
+  private followLink3Bound!: (e: Event) => void;
+  private openModalBound!: (e: Event) => void;
+
   constructor() {
     super();
     this._shadow = this.attachShadow({ mode: 'closed' });
-    // The mode can be set to 'open' if we need the document to be able to access the shadow-dom internals.
-    // Access happens through ths `shadowroot` property in the host.
     this._shadow.appendChild(template.content.cloneNode(true));
 
-    this.$navLink2 = this._shadow.querySelector(".nav-link-2");
-    this.$navLink3 = this._shadow.querySelector(".nav-link-3");
-    this.$modalBtn = this._shadow.getElementById("open-modal");
-
-    this.$userRole = this._shadow.getElementById("user-role-display");
+    this.$navLink2 = this._shadow.querySelector(".nav-link-2")!;
+    this.$navLink3 = this._shadow.querySelector(".nav-link-3")!;
+    this.$modalBtn = this._shadow.getElementById("open-modal") as HTMLButtonElement;
+    this.$userRole = this._shadow.getElementById("user-role-display")!;
   }
 
-  // Attributes need to be observed to be tied to the lifecycle change callback.
   static get observedAttributes() { return ['label', 'data']; }
 
-  // Attribute values are always strings, so we need to convert them in their getter/setters as appropriate.
-  get data() { return JSON.parse(this.getAttribute('data')); }
+  get data() { return JSON.parse(this.getAttribute('data')!); }
   get label() { return this.getAttribute('label'); }
 
-  set data(value) { this.setAttribute('data', value); }
-  set label(value) { this.setAttribute('label', value); }
+  set data(value: unknown) { this.setAttribute('data', value as string); }
+  set label(value: string | null) { this.setAttribute('label', value!); }
 
-  // A web component implements the following lifecycle methods.
-  attributeChangedCallback(name, oldVal, newVal) {
-    // Attribute value changes can be tied to any type of functionality through the lifecycle methods.
+  attributeChangedCallback(name: string, oldVal: string, newVal: string) {
     if (oldVal == newVal) return;
     switch (name) {
       default:
@@ -131,7 +133,6 @@ class Component extends HTMLElement {
     }
   }
   connectedCallback() {
-    // Triggered when the component is added to the DOM.
     this.followLink2Bound = this.followLink.bind(this, '/page-two');
     this.followLink3Bound = this.followLink.bind(this, '/page-three');
     this.openModalBound = this.openModal.bind(this);
@@ -140,59 +141,46 @@ class Component extends HTMLElement {
     this.$navLink3.addEventListener('click', this.followLink3Bound);
     this.$modalBtn.addEventListener('click', this.openModalBound);
 
-    state.subscribeToObservable(generalNames.OBSERVABLE_USER.description, "page-1", this.userUpdatedCallback.bind(this));
-    state.getValueFromObservable(generalNames.OBSERVABLE_USER.description, "role").then((role) => {
-      this.$userRole.textContent = role;
+    state.subscribeToObservable(generalNames.OBSERVABLE_USER.description!, "page-1", this.userUpdatedCallback.bind(this));
+    state.getValueFromObservable(generalNames.OBSERVABLE_USER.description!, "role").then((role) => {
+      this.$userRole.textContent = role as string;
     });
 
     setTimeout(() => {
-      state.updateObservable(generalNames.OBSERVABLE_USER.description, "role", roles.ADMIN.description);
+      state.updateObservable(generalNames.OBSERVABLE_USER.description!, "role", roles.ADMIN.description);
     }, 500);
   }
   disconnectedCallback() {
-    // Triggered when the component is removed from the DOM.
-    // Ideal place for cleanup code.
-    // Note that when destroying a component, it is good to also release any listeners.
     this.$navLink2.removeEventListener('click', this.followLink2Bound);
     this.$navLink3.removeEventListener('click', this.followLink3Bound);
     this.$modalBtn.removeEventListener('click', this.openModalBound);
   }
   adoptedCallback() {
-    // Triggered when the element is adopted through `document.adoptElement()` (like when using an <iframe/>).
-    // Note that adoption does not trigger the constructor again.
   }
 
-  /**
-   *
-   * @param {Event} event
-   */
-  followLink(event, page) {
+  followLink(page: string, event: Event) {
     event.preventDefault();
     event.stopImmediatePropagation();
-    emitNavigationEvent(this.$navLink, page);
+    emitNavigationEvent(this.$navLink2, page);
   }
 
-  /**
-   *
-   * @param {Event} event
-   */
-  async openModal(event) {
+  async openModal(event: Event) {
     event.stopImmediatePropagation();
     console.log("clicked to open modal!");
-    emitDialogEvent(this.$modalBtn, 'modal-dialog', this.modalConfirmCallback, this.modalCancelCallback);
+    emitDialogEvent(this.$modalBtn, 'modal-dialog', {}, this.modalConfirmCallback, this.modalCancelCallback);
   }
   async modalCancelCallback() {
     console.log("---> modalCancelCallback()");
   }
-  async modalConfirmCallback(data) {
+  async modalConfirmCallback(data: unknown) {
     console.log("---> modalConfirmCallback()", data);
   }
 
-  async userUpdatedCallback(subscriber, property, newValue) {
+  async userUpdatedCallback(subscriber: string, property: string, newValue: unknown) {
     // console.log(`---> userUpdatedCallback(${subscriber}, ${property}, ${newValue})`);
     switch(property) {
       case "role":
-        this.$userRole.textContent = newValue;
+        this.$userRole.textContent = newValue as string;
         break;
     }
   }
