@@ -10,7 +10,9 @@ template.innerHTML = /*html*/`
   ${ styles }
 
   :host {
-    display: block;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
   }
 
   div {
@@ -23,7 +25,8 @@ template.innerHTML = /*html*/`
 </style>
 
 <h1>Page 2</h1>
-<a href="/page-one" class="nav-link">Go to Page One</a>
+<a href="/page-one" class="nav-link-1">Go to Page One</a>
+<a href="/page-three" class="nav-link-3">Go to Page Three</a>
 
 <div class="flex-line">
   <button id="tab1">tab-1</button>
@@ -46,7 +49,8 @@ class Component extends HTMLElement {
     // Access happens through ths `shadowroot` property in the host.
     this._shadow.appendChild(template.content.cloneNode(true));
 
-    this.$navLink = this._shadow.querySelector('.nav-link');
+    this.$navLink1 = this._shadow.querySelector('.nav-link-1');
+    this.$navLink3 = this._shadow.querySelector('.nav-link-3');
     this.$tab1 = this._shadow.getElementById("tab1");
     this.$tab2 = this._shadow.getElementById("tab2");
     this.$tabContainer = this._shadow.getElementById("tab-container");
@@ -77,11 +81,13 @@ class Component extends HTMLElement {
     // Triggered when the component is added to the DOM.
     emitSubPageContainerEvent(this.$tabContainer, "/page-two");
 
-    this.followLinkBound = this.followLink.bind(this);
+    this.followLink1Bound = this.followLink.bind(this, '/page-one');
+    this.followLink3Bound = this.followLink.bind(this, '/page-three');
     this.switchToTabBoundTabOne = this.switchToTab.bind(this, "/page-two/tab-one", this.$tabContainer);
     this.switchToTabBoundTabTwo = this.switchToTab.bind(this, "/page-two/tab-two", this.$tabContainer);
 
-    this.$navLink.addEventListener('click', this.followLinkBound);
+    this.$navLink1.addEventListener('click', this.followLink1Bound);
+    this.$navLink3.addEventListener('click', this.followLink3Bound);
     this.$tab1.addEventListener('click', this.switchToTabBoundTabOne);
     this.$tab2.addEventListener('click', this.switchToTabBoundTabTwo);
 
@@ -94,7 +100,8 @@ class Component extends HTMLElement {
     // Triggered when the component is removed from the DOM.
     // Ideal place for cleanup code.
     // Note that when destroying a component, it is good to also release any listeners.
-    this.$navLink.removeEventListener('click', this.followLinkBound);
+    this.$navLink1.removeEventListener('click', this.followLink1Bound);
+    this.$navLink3.removeEventListener('click', this.followLink3Bound);
     this.$tab1.removeEventListener('click', this.switchToTabBoundTabOne);
     this.$tab2.removeEventListener('click', this.switchToTabBoundTabTwo);
   }
@@ -110,10 +117,11 @@ class Component extends HTMLElement {
   /**
    *
    * @param {Event} event
+   * @param {String} page
    */
-  followLink(event) {
+  followLink(event, page) {
     event.preventDefault();
-    emitNavigationEvent(this.$navLink, '/page-one');
+    emitNavigationEvent(this.$navLink, page);
   }
 
   /**
@@ -122,6 +130,7 @@ class Component extends HTMLElement {
    */
   switchToTab(path, container, event) {
     // console.log("---> switchToTab()", path, container, event);
+    event.stopImmediatePropagation();
     event.stopImmediatePropagation();
     emitNavigationEvent(event.target, path, container);
   }

@@ -11,10 +11,10 @@
     "build and preview": "npm run build && npm run preview"
   },
   "devDependencies": {
-    "vite": "^7.1.7"
+    "vite": "^7.3.1"
   },
   "license": "GNU-3.0",
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.23"
   }
 }
