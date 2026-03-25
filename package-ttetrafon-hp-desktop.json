@@ -1,0 +1,20 @@
+{
+  "name": "template-spa",
+  "author": "ttetrafon",
+  "private": true,
+  "version": "0.0.20",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "build and preview": "npm run build && npm run preview"
+  },
+  "devDependencies": {
+    "vite": "^7.1.9"
+  },
+  "license": "GNU-3.0",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
+}
