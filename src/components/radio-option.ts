@@ -4,7 +4,7 @@ const template = document.createElement('template');
 
 template.innerHTML = /*html*/`
 <style>
-  ${ styles }
+  ${styles}
 
   :host {
     display: block;
@@ -46,7 +46,7 @@ class Component extends HTMLElement {
 
   get checked() { return Boolean(this.getAttribute('checked')); }
   get group() { return this.getAttribute('group'); }
-  get id() { return this.getAttribute('id'); }
+  get id() { return this.getAttribute('id') ?? "" }
   get image() { return this.getAttribute('image'); }
   get label() { return this.getAttribute('label'); }
 

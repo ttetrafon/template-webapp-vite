@@ -1,6 +1,6 @@
 {
   "name": "template-spa",
-  "description": "...",
+  "description": "A simple webapp based on web-components and plain html/css.",
   "version": "0.0.22",
   "author": "ttetrafon",
   "private": true,
@@ -19,6 +19,7 @@
   },
   "scripts": {
     "dev": "vite preview",
+    "typecheck": "pnpm tsc",
     "build": "vite build",
     "build and preview": "npm run build && npm run preview"
   }
